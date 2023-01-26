@@ -14,6 +14,7 @@ class Collection(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
+    slug = models.SlugField()
     description = models.TextField()
     price = models.DecimalField(max_digits=7, decimal_places=2)
     inventory = models.IntegerField()
@@ -27,8 +28,8 @@ class Customer(models.Model):
     MEMBERSHIP_SILVER = 'S'
     MEMBERSHIP_GOLD = 'G'
     MEMBERSHIP_CHOICES = [
-        (MEMBERSHIP_BRONZE, 'Bronze')
-        (MEMBERSHIP_SILVER, 'Silver')
+        (MEMBERSHIP_BRONZE, 'Bronze'),
+        (MEMBERSHIP_SILVER, 'Silver'),
         (MEMBERSHIP_GOLD, 'Gold')
     ]
     first_name = models.CharField(max_length=255)
