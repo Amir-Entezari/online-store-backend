@@ -7,6 +7,6 @@ from store.models import Product
 
 
 def say_hello(request):
-    queryset = Product.objects.filter(inventory=F('unit_price'))  # search for more: queryset api
+    queryset = Product.objects.order_by('title','unit_price')  # search for more: queryset api
 
     return render(request, 'hello.html', {'name': 'amir', 'products': list(queryset)})
