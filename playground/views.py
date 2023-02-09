@@ -6,7 +6,7 @@ from store.models import Product
 
 
 def say_hello(request):
-    queryset = Product.objects.filter(price__range=(20,30)) #search for more: queryset api
+    queryset = Product.objects.filter(collection__id__range=(3,6)) #search for more: queryset api
     print(queryset[0])
 
     return render(request, 'hello.html', {'name': 'amir','products':list(queryset)})
