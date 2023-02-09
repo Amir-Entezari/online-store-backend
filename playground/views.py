@@ -7,7 +7,6 @@ from store.models import Product, OrderItem
 
 
 def say_hello(request):
-    queryset = Product.objects.filter(id__in=OrderItem.objects.values(
-        'product_id').distinct()).order_by('title')  # search for more: queryset api
+    queryset = Product.objects.select_related('collection').all()  # search for more: queryset api
 
     return render(request, 'hello.html', {'name': 'amir', 'products': list(queryset)})
