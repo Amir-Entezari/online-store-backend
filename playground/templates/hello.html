@@ -8,6 +8,10 @@
 </head>
 <body>
     <h1>hello {{name}}</h1>
-    {{result}}
+    <ul>
+        {% for item in result %}
+        <li>{{item.new_id}}</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
