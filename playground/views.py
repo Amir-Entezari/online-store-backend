@@ -5,10 +5,8 @@ from tags.models import TaggedItem
 
 
 def say_hello(request):
-    Collection.objects.update(title='Games')  # This method is recommonded
+    Collection.objects.filter(id__gt=5).delete()
     # OR
-    # collection = Collection(pk=11)
-    # collection.title = 'Games'
-    # collection.featured_product = None
-    # collection.save()
+    collection = Collection(pk=11)
+    collection.delete()
     return render(request, 'hello.html', {'name': 'amir'})
