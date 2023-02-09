@@ -9,8 +9,8 @@
 <body>
     <h1>hello {{name}}</h1>
     <ul>
-        {% for product in products %}
-        <li>{{product.title}} - ${{product.collection.title }} </li>
+        {% for order in orders %}
+        <li>{{order.id}} - {{ order.customer.first_name }} </li>
         {% endfor %}
     </ul>
 </body>
