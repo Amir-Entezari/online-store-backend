@@ -1,14 +1,15 @@
 from django.shortcuts import render
-from django.db.models import Value, F, Func,ExpressionWrapper,DecimalField
-from django.db.models.functions import Concat
-from django.db.models.aggregates import Count, Max, Min, Avg, Sum
-from store.models import Product, Customer
-# Create your views here.
+from django.contrib.contenttypes.models import ContentType
+from store.models import Product
+from tags.models import TaggedItem
 
 
 def say_hello(request):
-    discounted_price = ExpressionWrapper(F('unit_price')*0.8, output_field=DecimalField())
-    result = Product.objects.annotate(
-        discounted_price=discounted_price)  # search "django database functions" for more
-
-    return render(request, 'hello.html', {'name': 'amir', 'result': result})
+    content_type = ContentType.objects.get_for_model(Product)
+    queryset=TaggedItem.objects\
+        .select_related('tag')\
+        .filter(
+            content_type=content_type,
+            object_id=1
+        )
+    return render(request, 'hello.html', {'name': 'amir', 'tags': list(queryset)})
