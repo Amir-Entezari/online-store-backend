@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print('Populating the database...')
         current_dir = os.path.dirname(__file__)
-        file_path = os.path.join(current_dir, 'store_customer.sql')
+        file_path = os.path.join(current_dir, 'seed.sql')
         sql = Path(file_path).read_text()
 
         with connection.cursor() as cursor:
