@@ -10,7 +10,7 @@
     <h1>hello {{name}}</h1>
     <ul>
         {% for item in result %}
-        <li>{{item.full_name}}</li>
+        <li>{{item.first_name}} {{item.last_name}} - {{item.orders_count}}</li>
         {% endfor %}
     </ul>
 </body>

@@ -8,6 +8,6 @@ from store.models import Product, Customer
 
 def say_hello(request):
     result = Customer.objects.annotate(
-        full_name=Concat('first_name', Value(' '), 'last_name'))  # search "django database functions" for more
+        orders_count=Count('order'))  # search "django database functions" for more
 
     return render(request, 'hello.html', {'name': 'amir', 'result': result})
