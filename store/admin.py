@@ -6,6 +6,20 @@ from . import models
 # Register your models here.
 
 
+class InventoryFilter(admin.SimpleListFilter):
+    title = 'inventory'
+    parameter_name = 'inventory'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('<10', 'Low')
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == '<10':
+            return queryset.filter(inventory__lt=10)
+
+
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'products_count']
@@ -32,6 +46,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ['unit_price']
     list_per_page = 20
     search_fields = ['title']
+    list_filter = ['collection', 'last_update',InventoryFilter ]
 
     @admin.display(ordering='inventory')
     def inventory_status(self, product):
