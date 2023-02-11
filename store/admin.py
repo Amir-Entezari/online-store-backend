@@ -31,6 +31,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['title', 'unit_price', 'inventory_status', 'collection']
     list_editable = ['unit_price']
     list_per_page = 20
+    search_fields = ['title']
 
     @admin.display(ordering='inventory')
     def inventory_status(self, product):
@@ -45,25 +46,26 @@ admin.site.register(models.Promotion)
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'membership','orders']
+    list_display = ['first_name', 'last_name', 'membership', 'orders']
     list_editable = ['membership']
-    ordering = ['first_name', 'last_name']
     list_per_page = 20
+    ordering = ['first_name', 'last_name']
+    search_fields = ['first_name__istartswith', 'last_name__istartswith']
 
     @admin.display(ordering='orders_count')
-    def orders(self,customer):
+    def orders(self, customer):
         url = (reverse('admin:store_order_changelist')
-            +'?'
-            +urlencode({
-                'customer__id':str(customer.id)
-            }))
-        return format_html('<a href="{}">{} orders</a>',url,customer.orders_count)
-    
+               + '?'
+               + urlencode({
+                   'customer__id': str(customer.id)
+               }))
+        return format_html('<a href="{}">{} orders</a>', url, customer.orders_count)
+
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(
             orders_count=Count('order')
         )
-    
+
 
 admin.site.register(models.Address)
 
