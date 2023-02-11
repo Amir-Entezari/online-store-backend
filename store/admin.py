@@ -10,7 +10,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title', 'unit_price', 'inventory_status']
+    list_display = ['title', 'unit_price', 'inventory_status', 'collection']
     list_editable = ['unit_price']
     list_per_page = 20
 
@@ -38,9 +38,14 @@ admin.site.register(models.Address)
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['placed_at', 'customer_id', 'payment_status']
+    list_display = ['placed_at',
+                    'payment_status', 'customer_fullname']
+    list_select_related = ['customer']
     ordering = ['-placed_at']
     list_per_page = 20
+
+    def customer_fullname(self, order):
+        return str(order.customer.id) + '-' + order.customer.first_name + ' ' + order.customer.last_name
 
 
 @admin.register(models.OrderItem)
