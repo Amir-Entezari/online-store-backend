@@ -39,13 +39,10 @@ admin.site.register(models.Address)
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['placed_at',
-                    'payment_status', 'customer_fullname']
+                    'payment_status', 'customer']
     list_select_related = ['customer']
     ordering = ['-placed_at']
     list_per_page = 20
-
-    def customer_fullname(self, order):
-        return str(order.customer.id) + '-' + order.customer.first_name + ' ' + order.customer.last_name
 
 
 @admin.register(models.OrderItem)
