@@ -1,11 +1,21 @@
 from django.contrib import admin
 from . import models
+from django.db.models.aggregates import Count
 # Register your models here.
 
 
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ['title']
+    list_display = ['title', 'products_count']
+
+    @admin.display(ordering='products_count')
+    def products_count(slef, collection):
+        return collection.products_count
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(
+            products_count=Count('product')
+        )
 
 
 @admin.register(models.Product)
