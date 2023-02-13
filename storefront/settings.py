@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'playground',
     'debug_toolbar',
     'store',
+    'store_custom',
     'tags'
 ]
 
@@ -87,9 +88,9 @@ WSGI_APPLICATION = 'storefront.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'store',
+        'NAME': 'store',
         'HOST': 'localhost',
-        'USER':'root',
+        'USER': 'root',
         'PASSWORD': 'MyP@ssw0rd'
     }
 }
