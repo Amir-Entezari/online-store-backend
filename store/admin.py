@@ -23,7 +23,7 @@ class InventoryFilter(admin.SimpleListFilter):
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'products_count']
-
+    search_fields = ['title']
     @admin.display(ordering='products_count')
     def products_count(self, collection):
         url = (
@@ -42,12 +42,17 @@ class CollectionAdmin(admin.ModelAdmin):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
+    exclude = ['promotion']
+    autocomplete_fields = ['collection']
+    prepopulated_fields = {
+        'slug': ['title']
+    }
     actions = ['clear_inventory']
     list_display = ['title', 'unit_price', 'inventory_status', 'collection']
     list_editable = ['unit_price']
     list_per_page = 20
     search_fields = ['title']
-    list_filter = ['collection', 'last_update',InventoryFilter ]
+    list_filter = ['collection', 'last_update', InventoryFilter]
 
     @admin.display(ordering='inventory')
     def inventory_status(self, product):
@@ -57,7 +62,7 @@ class ProductAdmin(admin.ModelAdmin):
             return "OK"
 
     @admin.action(description='Clear inventory   ')
-    def clear_inventory(self,request,queryset):
+    def clear_inventory(self, request, queryset):
         updated_count = queryset.update(inventory=0)
         self.message_user(
             request,
@@ -97,6 +102,7 @@ admin.site.register(models.Address)
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['customer']
     list_display = ['placed_at',
                     'payment_status', 'customer']
     list_select_related = ['customer']
