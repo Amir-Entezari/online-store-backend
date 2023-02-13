@@ -24,6 +24,7 @@ class InventoryFilter(admin.SimpleListFilter):
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'products_count']
     search_fields = ['title']
+
     @admin.display(ordering='products_count')
     def products_count(self, collection):
         url = (
@@ -100,9 +101,18 @@ class CustomerAdmin(admin.ModelAdmin):
 admin.site.register(models.Address)
 
 
+class OrderItemInline(admin.TabularInline):
+    autocomplete_fields = ['product']
+    min_num = 1
+    max_num = 10
+    model = models.OrderItem
+    extra = 0
+
+
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer']
+    inlines = [OrderItemInline]
     list_display = ['placed_at',
                     'payment_status', 'customer']
     list_select_related = ['customer']
