@@ -12,7 +12,8 @@ class CollectionSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'title', 'unit_price', 'collection', 'price_with_tax']
+        fields = ['id', 'title', 'slug', 'description', 'unit_price',
+                  'inventory', 'collection', 'price_with_tax']
     price_with_tax = serializers.SerializerMethodField(
         method_name='calculate_tax')
     collection = serializers.HyperlinkedRelatedField(
