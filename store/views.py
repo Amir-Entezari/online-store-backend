@@ -66,13 +66,15 @@ class CollectionDetail(APIView):
         serializer = CollectionSerializer(collection)
         return Response(serializer.data)
 
-    def put(self, request):
+    def put(self, request,pk):
+        collection = get_object_or_404(Collection.objects.annotate(
+            products_count=Count('product')), pk=pk)
         serializer = CollectionSerializer(collection, request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
-    def delete(self, request):
+    def delete(self, request,pk):
         collection = get_object_or_404(Collection.objects.annotate(
             products_count=Count('product')), pk=pk)
         if collection.product_set.count() > 0:
