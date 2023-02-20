@@ -4,9 +4,7 @@ from . import views
 
 router = SimpleRouter()
 router.register('products', views.ProductViewSet)
+router.register('collections', views.CollectionViewSet)
 urlpatterns = [
-    path('', include(router.urls)),
-    path('collections/', views.CollectionList.as_view()),
-    path('collections/<int:pk>/', views.CollectionDetail.as_view(),
-         name='collection-detail')
+    path('', include(router.urls))
 ]
