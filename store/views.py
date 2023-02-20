@@ -45,34 +45,38 @@ class ProductDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET', 'POST'])
-def collection_list(request):
-    if request.method == 'GET':
+class CollectionList(APIView):
+    def get(self, request):
         queryset = Collection.objects.annotate(
             products_count=Count('product')).all()
         serializer = CollectionSerializer(queryset, many=True)
         return Response(serializer.data)
-    elif request.method == 'POST':
+
+    def post(self, request):
         serializer = CollectionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def collection_detail(request, pk):
-    collection = get_object_or_404(Collection.objects.annotate(
-        products_count=Count('product')), pk=pk)
-    if request.method == 'GET':
+class CollectionDetail(APIView):
+    def get(self, request, pk):
+        collection = get_object_or_404(Collection.objects.annotate(
+            products_count=Count('product')), pk=pk)
         serializer = CollectionSerializer(collection)
         return Response(serializer.data)
-    elif request.method == 'PUT':
+
+    def put(self, request):
         serializer = CollectionSerializer(collection, request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    elif request.method == 'DELETE':
+
+    def delete(self, request):
+        collection = get_object_or_404(Collection.objects.annotate(
+            products_count=Count('product')), pk=pk)
         if collection.product_set.count() > 0:
             return Response({'error': 'collection cannot be deleted because it includes one or more products.'})
         collection.delete()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
+
