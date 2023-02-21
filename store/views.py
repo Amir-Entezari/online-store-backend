@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
-from .models import Product, Collection, OrderItem
-from .serializers import ProductSerializer, CollectionSerializer
+from .models import Product, Collection, OrderItem, Review
+from .serializers import ProductSerializer, CollectionSerializer,ReviewSerializer
 from django.db.models.aggregates import Count
 
 
@@ -31,3 +31,7 @@ class CollectionViewSet(ModelViewSet):
         if Product.objects.filter(collection_id=kwargs['pk']).count() > 0:
             return Response({'error': 'collection cannot be deleted because it includes one or more products.'})
         return super().destroy(request, *args, **kwargs)
+
+class ReviewViewSet(ModelViewSet):
+    queryset = Review
+    serializer_class = ReviewSerializer
