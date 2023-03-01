@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
 from .models import Product, Cart, CartItem, Collection, Customer, OrderItem, Review, Order
-from .serializers import CartSerailizer, AddCartItemSerializer, UpdateCartItemSerializer, CartItemSerializer, ProductSerializer, CollectionSerializer, CustomerSerializer, ReviewSerializer, OrderSerializer, CreateOrderSerializer
+from .serializers import CartSerailizer, AddCartItemSerializer, UpdateCartItemSerializer, CartItemSerializer, ProductSerializer, CollectionSerializer, CustomerSerializer, ReviewSerializer, OrderSerializer, CreateOrderSerializer, UpdateOrderSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
 from .permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
@@ -124,6 +124,8 @@ class OrderViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return CreateOrderSerializer
+        elif self.request.method == 'PATCH':
+            return UpdateOrderSerializer
         return OrderSerializer
 
     def get_queryset(self):
