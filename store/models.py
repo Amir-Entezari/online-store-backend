@@ -43,6 +43,11 @@ class Product(models.Model):
         ordering = ['title']
 
 
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='store/images')
+
+
 class Customer(models.Model):
     MEMBERSHIP_BRONZE = 'B'
     MEMBERSHIP_SILVER = 'S'
@@ -73,8 +78,9 @@ class Customer(models.Model):
     class Meta:
         ordering = ['user__first_name', 'user__last_name']
         permissions = [
-            ('view_history','Can view history')
+            ('view_history', 'Can view history')
         ]
+
 
 class Order(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
